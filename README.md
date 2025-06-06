@@ -1,66 +1,75 @@
-
+ 
 # Enhanced Network Packet Sniffer
 
-## Description
-Enhanced Network Packet Sniffer is a Python-based tool with a graphical user interface (GUI) for real-time network packet capture and analysis. It detects SYN flood attacks by monitoring TCP packets, sends alert emails when attacks are detected, and logs suspicious activities into an SQLite database for further analysis.
+An advanced network packet sniffer with real-time GUI visualization, SYN flood attack detection, email alerting, and SQLite logging. Built using Python, Scapy, and Tkinter.
 
 ---
 
 ## Features
-- Real-time packet sniffing using Scapy
-- Detection of SYN flood attacks based on customizable thresholds
-- Email alerts for detected attacks via SMTP
-- Logging of packet data and alerts to an SQLite database
-- Simple Tkinter GUI to start/stop sniffing and view logs live
 
----
-
-## Prerequisites
-- Python 3.8 or higher
-- [Scapy](https://scapy.net/)
-- [python-dotenv](https://pypi.org/project/python-dotenv/) (for managing environment variables)
-- SQLite3 (optional, for inspecting database)
-- Access to an SMTP email account for sending alerts (e.g., Gmail with app passwords enabled)
+- Capture live TCP packets and decode TCP flags
+- Detect SYN flood attacks based on customizable thresholds
+- Send email alerts for detected attacks
+- Log packet details and alerts to a local SQLite database
+- Simple Tkinter-based GUI with Start/Stop controls and live output
+- Configurable via environment variables for secure credential handling
 
 ---
 
 ## Installation
 
 1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/enhanced-network-packet-sniffer.git
-   cd enhanced-network-packet-sniffer
+
+```bash
+git clone https://github.com/yourusername/enhanced-network-packet-sniffer.git
+cd enhanced-network-packet-sniffer
 ````
 
-2. **Install required Python packages:**
+2. **Create and activate a virtual environment (optional but recommended):**
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+* On Windows:
 
-   Or manually:
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+```
 
-   ```bash
-   pip install scapy python-dotenv
-   ```
+* On macOS/Linux:
 
-3. **Set up environment variables:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-   Create a `.env` file in the project root with your email credentials:
+3. **Install required Python packages:**
 
-   ```env
-   EMAIL_ADDRESS=your_email@example.com
-   EMAIL_PASSWORD=your_email_password_or_app_password
-   RECEIVER_EMAIL=receiver_email@example.com
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-   > **Security tip:** Never hardcode passwords in source code.
+*If `requirements.txt` is not present, install manually:*
+
+```bash
+pip install scapy python-dotenv
+```
+
+4. **Set up environment variables:**
+
+Create a `.env` file in the project root directory and add your email credentials:
+
+```env
+EMAIL_ADDRESS=your_email@example.com
+EMAIL_PASSWORD=your_email_password_or_app_password
+RECEIVER_EMAIL=receiver_email@example.com
+```
+
+> **Important:** For Gmail users with two-factor authentication (2FA), use an app password instead of your normal password.
 
 ---
 
 ## Usage
 
-Run the sniffer GUI:
+Run the main GUI application:
 
 ```bash
 python src/sniffer_gui.py
@@ -68,69 +77,55 @@ python src/sniffer_gui.py
 
 * Click **Start Sniffing** to begin capturing packets.
 * Click **Stop Sniffing** to stop.
-* Packet summaries and alerts will be displayed in the GUI output box.
-* If a SYN flood attack is detected, an email alert is sent and the event is logged to the database.
+* Alerts and packet info will display in the GUI window.
+* Alerts will also be emailed and logged in `attacks.db`.
 
 ---
 
 ## Database
 
-* Alerts and relevant packet info are logged in `attacks.db` (SQLite database).
-* To inspect the database, use the SQLite CLI or GUI tools such as [DB Browser for SQLite](https://sqlitebrowser.org/).
+* SQLite database file: `attacks.db`
+* Table: `alerts`
+* Stores details of detected attacks with timestamp.
 
-Example CLI command to view alerts table:
+To query the database (requires `sqlite3` installed):
 
 ```bash
 sqlite3 attacks.db
 sqlite> SELECT * FROM alerts;
- 
+```
+
+---
 
 ## Configuration
 
-* Adjust the SYN flood detection threshold and alert interval in `sniffer_gui.py`:
+* Customize thresholds and alert intervals inside `src/sniffer_gui.py`
+* Secure credentials via `.env` and `dotenv` package
 
-  ```python
-  attack_threshold = 100  # Number of SYN packets from same IP to trigger alert
-  alert_interval = 60     # Minimum seconds between alerts
-  ```
-* Modify email settings via your `.env` file.
+---
+
+## Dependencies
+
+* Python 3.7+
+* [Scapy](https://scapy.net/)
+* [Tkinter](https://docs.python.org/3/library/tkinter.html) (usually included with Python)
+* [python-dotenv](https://github.com/theskumar/python-dotenv)
 
 ---
 
 ## Troubleshooting
 
-* **Email sending fails:**
-
-  * Verify SMTP credentials and app password if using Gmail.
-  * Check network/firewall restrictions.
-* **Packet sniffing fails:**
-
-  * Run script with administrator/root privileges.
-  * Ensure Scapy is properly installed.
-* **SQLite commands not found:**
-
-  * Install SQLite CLI or use GUI tools.
+* **Permission Errors:** Running packet sniffing usually requires admin/root privileges.
+* **Email Sending:** Ensure SMTP credentials are correct and app password used if needed.
+* **Missing modules:** Install dependencies as shown in Installation.
+* **SQLite3:** Usually pre-installed with Python, but can be installed separately if needed.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ---
 
-## Acknowledgments
-
-* [Scapy](https://scapy.net/) — powerful packet manipulation library
-* [Tkinter](https://docs.python.org/3/library/tkinter.html) — Python GUI toolkit
-* Inspiration and guidance from various network security tutorials and open-source projects.
-
----
-
-## Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to open an issue or submit a pull request.
-
----
-
-m
+ 
